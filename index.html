@@ -5,36 +5,42 @@
     <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-    <h1>DKP System</h1>
+    <header>
+        <h1>DKP System</h1>
+        <nav>
+            <button id="addPlayerBtn">Добавить игрока</button>
+            <button id="addDkpBtn">Начислить DKP</button>
+            <button id="spendDkpBtn">Потратить DKP</button>
+        </nav>
+    </header>
 
-    <button id="addPlayerBtn">Добавить игрока</button>
+    <main>
+        <!-- Модальное окно для добавления игрока -->
+        <div id="addPlayerModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Добавить игрока</h2>
+                <form id="addPlayerForm">
+                    <label for="playerName">Имя:</label>
+                    <input type="text" id="playerName" name="playerName" required>
 
-    <!-- Модальное окно -->
-    <div id="addPlayerModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2>Добавить игрока</h2>
-            <form id="addPlayerForm">
-                <label for="playerName">Имя:</label>
-                <input type="text" id="playerName" name="playerName" required>
+                    <label for="playerClass">Класс:</label>
+                    <input type="text" id="playerClass" name="playerClass" required>
 
-                <label for="playerClass">Класс:</label>
-                <input type="text" id="playerClass" name="playerClass" required>
+                    <label for="initialDkp">Начальный DKP:</label>
+                    <input type="number" id="initialDkp" name="initialDkp" value="0">
 
-                <label for="initialDkp">Начальный DKP:</label>
-                <input type="number" id="initialDkp" name="initialDkp" value="0">
-
-                <button type="submit">Добавить</button>
-            </form>
+                    <button type="submit">Добавить</button>
+                </form>
+            </div>
         </div>
-    </div>
 
-    <div id="playersContainer"></div>
+        <div id="playersContainer"></div>
+    </main>
 
-    <button id="addDkpBtn">Начислить DKP</button>
-    <button id="spendDkpBtn">Потратить DKP</button>
-
-    <p>Последний рейд: <span id="lastRaid">-</span></p>
+    <footer>
+        <p>Последний рейд: <span id="lastRaid">-</span></p>
+    </footer>
 
     <script src="script.js"></script>
 </body>
