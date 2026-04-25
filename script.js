@@ -4,7 +4,7 @@ let players = [];
 // Загрузка данных из localStorage при запуске
 document.addEventListener('DOMContentLoaded', function() {
     loadData();
-    updateDisplay();
+    updatePlayerList();
 });
 
 // Модальные окна
@@ -31,8 +31,4 @@ window.onclick = function(event) {
 
 // Добавление игрока
 document.getElementById('addPlayerForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    const name = document.getElementById('playerName').value;
-    const playerClass = document.getElementById('playerClass').value;
-    const initialDkp
+    e.preventDefault
