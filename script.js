@@ -31,4 +31,46 @@ window.onclick = function(event) {
 
 // Добавление игрока
 document.getElementById('addPlayerForm').addEventListener('submit', function(e) {
-    e.preventDefault
+    e.preventDefault();
+
+    const playerName = document.getElementById('playerName').value;
+    const playerClass = document.getElementById('playerClass').value;
+    const initialDkp = parseInt(document.getElementById('initialDkp').value);
+
+    // Создание нового игрока
+    const newPlayer = {
+        name: playerName,
+        class: playerClass,
+        dkp: initialDkp
+    };
+
+    // Добавление игрока в массив
+    players.push(newPlayer);
+
+    // Обновление списка игроков
+    updatePlayerList();
+
+    // Сброс полей формы
+    document.getElementById('playerName').value = '';
+    document.getElementById('playerClass').value = '';
+    document.getElementById('initialDkp').value = 0;
+
+    // Закрытие модального окна
+    addPlayerModal.style.display = "none";
+});
+
+// Функция для обновления списка игроков
+function updatePlayerList() {
+    const playersContainer = document.getElementById('playersContainer');
+    playersContainer.innerHTML = '';
+
+    players.forEach(player => {
+        const playerElement = document.createElement('div');
+        playerElement.classList.add('player');
+        playerElement.innerHTML = `
+            <h3>${player.name} (${player.class})</h3>
+            <p>DKP: ${player.dkp}</p>
+        `;
+        playersContainer.appendChild(playerElement);
+    });
+}
