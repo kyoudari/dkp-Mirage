@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DKP Система - [Название Гильдии]</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🏰 DKP Система Гильдии</h1>
+            <h2>Throne and Liberty</h2>
+        </header>
+
+        <div class="controls">
+            <button id="addPlayerBtn">Добавить игрока</button>
+            <button id="addDkpBtn">Начислить DKP</button>
+            <button id="spendDkpBtn">Потратить DKP</button>
+            <button id="exportBtn">Экспорт данных</button>
+        </div>
+
+        <div class="stats">
+            <div class="stat-card">
+                <h3>Всего игроков</h3>
+                <span id="totalPlayers">0</span>
+            </div>
+            <div class="stat-card">
+                <h3>Последний рейд</h3>
+                <span id="lastRaid">-</span>
+            </div>
+        </div>
+
+        <table id="dkpTable">
+            <thead>
+                <tr>
+                    <th>Игрок</th>
+                    <th>Класс</th>
+                    <th>Текущие DKP</th>
+                    <th>Заработано</th>
+                    <th>Потрачено</th>
+                    <th>Действия</th>
+                </tr>
+            </thead>
+            <tbody id="playerList">
+                <!-- Игроки будут добавляться динамически -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Модальные окна -->
+    <div id="addPlayerModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>Добавить игрока</h3>
+            <form id="addPlayerForm">
+                <input type="text" id="playerName" placeholder="Имя игрока" required>
+                <select id="playerClass" required>
+                    <option value="">Выберите класс</option>
+                    <option value="Танк">Танк</option>
+                    <option value="ДД">ДД</option>
+                    <option value="Хилер">Хилер</option>
+                    <option value="Поддержка">Поддержка</option>
+                </select>
+                <input type="number" id="initialDkp" placeholder="Начальные DKP" value="0">
+                <button type="submit">Добавить</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
