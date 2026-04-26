@@ -1,3 +1,11 @@
 [
-  { "id":"t1","date":"2026-04-01T20:00:00Z","author":"Lifewell","targetId":"p1","targetName":"Striker","amount":20,"reason":"Raid loot" }
+  {
+    "id": "t1",
+    "date": "2026-04-01T20:00:00Z",
+    "author": "Lifewell",
+    "targetId": "p1",
+    "targetName": "Striker",
+    "amount": 20,
+    "reason": "Raid loot"
+  }
 ]
