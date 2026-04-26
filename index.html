@@ -5,80 +5,89 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>DKP Manager — Guild</title>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-900 text-gray-100 min-h-screen">
-  <div class="max-w-6xl mx-auto p-6">
+  <div class="max-w-4xl mx-auto p-6">
     <header class="flex items-center justify-between mb-6">
-      <h1 class="text-2xl font-bold">DKP Manager — Guild</h1>
-      <div class="text-sm flex gap-2 items-center">
-        <input id="editorName" type="text" placeholder="Your nickname" class="px-2 py-1 rounded bg-gray-800" />
-        <input id="githubToken" type="password" placeholder="GitHub Token (for PR)" class="px-2 py-1 rounded bg-gray-800" />
-        <input id="repoInput" type="text" placeholder="owner/repo" class="px-2 py-1 rounded bg-gray-800" />
-        <button id="openPRBtn" class="px-3 py-1 bg-indigo-600 rounded">Create PR</button>
+      <h1 class="text-2xl font-bold">DKP Manager</h1>
+      <div class="flex items-center gap-2">
+        <input id="editorName" type="text" placeholder="Your nickname (officer)" class="px-2 py-1 rounded bg-gray-800 text-sm" />
+        <input id="githubToken" type="password" placeholder="GitHub Token (for PR)" class="px-2 py-1 rounded bg-gray-800 text-sm" />
+        <input id="repoInput" type="text" placeholder="owner/repo" class="px-2 py-1 rounded bg-gray-800 text-sm" />
+        <button id="openPRBtn" class="px-3 py-1 bg-indigo-600 rounded text-sm">Create PR</button>
       </div>
     </header>
 
-    <main class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      <section class="lg:col-span-2 bg-gray-800 rounded p-4">
-        <div class="flex items-center justify-between mb-3">
-          <div class="flex items-center gap-3">
-            <h2 class="text-lg font-semibold">Players</h2>
-            <input id="searchInput" type="text" placeholder="Search..." class="px-2 py-1 rounded bg-gray-900 text-sm" />
-            <select id="sortSelect" class="px-2 py-1 rounded bg-gray-900 text-sm">
-              <option value="dkp_desc">DKP ↓</option>
-              <option value="dkp_asc">DKP ↑</option>
-              <option value="nick_asc">Nickname A-Z</option>
-            </select>
-          </div>
-          <div class="flex gap-2">
-            <button id="importBtn" class="px-2 py-1 bg-yellow-600 rounded text-sm">Import</button>
-            <button id="exportBtn" class="px-2 py-1 bg-green-600 rounded text-sm">Export</button>
-            <button id="addPlayerBtn" class="px-2 py-1 bg-blue-600 rounded text-sm">Add player</button>
-          </div>
+    <!-- Controls -->
+    <div class="flex justify-between items-center mb-4 gap-4">
+      <div class="flex gap-2">
+        <button id="addPlayerBtn" class="px-3 py-1 bg-green-600 rounded">Add player</button>
+        <button id="importBtn" class="px-3 py-1 bg-yellow-600 rounded">Import JSON</button>
+        <button id="exportBtn" class="px-3 py-1 bg-gray-700 rounded">Export JSON</button>
+      </div>
+      <input id="searchInput" type="text" placeholder="Search nickname/class" class="px-2 py-1 rounded bg-gray-800" />
+    </div>
+
+    <!-- Players list -->
+    <div id="playersList" class="space-y-3 mb-6"></div>
+
+    <!-- Transaction form -->
+    <div class="bg-gray-800 rounded p-4">
+      <h2 class="text-lg font-semibold mb-2">Give / Take DKP</h2>
+      <form id="txForm" class="grid grid-cols-1 md:grid-cols-4 gap-2">
+        <select id="txTarget" class="p-2 rounded bg-gray-900"></select>
+        <input id="txAmount" type="number" placeholder="Amount (+/-)" class="p-2 rounded bg-gray-900" />
+        <input id="txReason" placeholder="Reason" class="p-2 rounded bg-gray-900" />
+        <button type="submit" class="px-3 py-2 bg-indigo-600 rounded">Apply</button>
+      </form>
+    </div>
+
+    <!-- Transactions log -->
+    <div class="mt-6">
+      <h3 class="text-lg font-semibold mb-2">Transactions</h3>
+      <div id="txList" class="space-y-2 max-h-48 overflow-auto"></div>
+    </div>
+  </div>
+
+  <!-- Player modal -->
+  <div id="modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+    <div class="bg-gray-800 rounded p-4 w-full max-w-md">
+      <h3 id="modalTitle" class="text-lg font-semibold mb-2">Add player</h3>
+      <form id="playerForm" class="grid gap-2">
+        <input id="p_nickname" class="p-2 rounded bg-gray-900" placeholder="Nickname" required />
+        <input id="p_class" class="p-2 rounded bg-gray-900" placeholder="Class (DD / Heal / Tank)" />
+        <input id="p_icon" class="p-2 rounded bg-gray-900" placeholder="Icon path (icons/Name.svg) — optional" />
+        <input id="p_dkp" type="number" class="p-2 rounded bg-gray-900" placeholder="DKP" />
+        <div class="flex justify-end gap-2 mt-2">
+          <button type="button" id="modalCancel" class="px-3 py-1 bg-gray-600 rounded">Cancel</button>
+          <button type="submit" id="modalSave" class="px-3 py-1 bg-blue-600 rounded">Save</button>
         </div>
+      </form>
+    </div>
+  </div>
 
-        <div id="playersTable" class="space-y-2"></div>
-
-        <hr class="my-4 border-gray-700" />
-        <h2 class="text-lg font-semibold mb-2">Transactions</h2>
-        <div id="txList" class="space-y-2 max-h-56 overflow-auto mb-4"></div>
-
-        <div class="mt-4">
-          <h3 class="font-medium mb-2">New transaction</h3>
-          <form id="txForm" class="grid grid-cols-1 md:grid-cols-4 gap-2">
-            <select id="txTarget" class="p-2 rounded bg-gray-900"></select>
-            <input id="txAmount" type="number" placeholder="Amount (+/-)" class="p-2 rounded bg-gray-900" />
-            <input id="txReason" placeholder="Reason" class="p-2 rounded bg-gray-900" />
-            <button type="submit" class="px-3 py-2 bg-indigo-600 rounded">Apply</button>
-          </form>
-        </div>
-      </section>
-
-      <aside class="bg-gray-800 rounded p-4">
-        <h2 class="text-lg font-semibold mb-2">Settings & Icons</h2>
-        <div class="mb-3">
-          <label class="block text-sm text-gray-400 mb-1">Tailwind Theme</label>
-          <select id="themeSelect" class="w-full p-2 bg-gray-900 rounded">
-            <option value="default">Default</option>
-            <option value="dark">Dark</option>
-          </select>
-        </div>
-
-        <div class="mb-3">
-          <h3 class="font-medium mb-2">Class icons</h3>
-          <div id="iconsGrid" class="grid grid-cols-4 gap-2"></div>
-          <input id="iconFile" type="file" accept="image/*" class="mt-2" />
-          <input id="iconClassName" type="text" placeholder="Class name for icon" class="mt-2 w-full p-2 rounded bg-gray-900" />
-          <button id="uploadIconBtn" class="mt-2 px-2 py-1 bg-emerald-600 rounded w-full">Upload & add to commit</button>
-        </div>
-
+  <template id="playerTpl">
+    <div class="flex items-center justify-between p-3 bg-gray-900 rounded">
+      <div class="flex items-center gap-3">
+        <img class="w-12 h-12 rounded bg-gray-700 object-cover" src="" alt="icon" />
         <div>
-          <h3 class="font-medium mb-2">Import/Export</h3>
-          <div class="flex gap-2">
-            <input id="fileInput" type="file" accept=".json,.csv" class="hidden" />
-            <button id="exportPlayersBtn" class="px-2 py-1 bg-gray-700 rounded">Export players JSON</button>
-            <button id="exportCSVBtn" class="px-2 py-1 bg-gray-700 rounded">Export CSV</button>
-            <button id="openFileBtn" class="px-2 py-1 bg-gray-700 rounded">Open file</button>
-      
+          <div class="font-semibold nickname"></div>
+          <div class="text-sm text-gray-400 classRole"></div>
+        </div>
+      </div>
+      <div class="flex items-center gap-3">
+        <div class="text-right">
+          <div class="font-medium dkp"></div>
+        </div>
+        <div class="flex gap-2">
+          <button class="editBtn px-2 py-1 bg-yellow-600 rounded text-sm">Edit</button>
+          <button class="delBtn px-2 py-1 bg-red-600 rounded text-sm">Del</button>
+        </div>
+      </div>
+    </div>
+  </template>
+
+  <script src="app.js"></script>
+</body>
+</html>
