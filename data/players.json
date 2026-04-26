@@ -1,5 +1,5 @@
 [
-  { "id": "p1", "nickname": "Striker", "class": "DD",   "role": "player",  "dkp": 50, "icon": "icons/DD.svg" },
+  { "id": "p1", "KatyaChapman": "Striker", "DD": "DD",   "role": "player",  "dkp": 50, "icon": "icons/DD.svg" },
   { "id": "p2", "nickname": "Lifewell", "class": "Heal", "role": "officer","dkp": 120, "icon": "icons/Heal.svg" },
   { "id": "p3", "nickname": "Bulwark",  "class": "Tank", "role": "player",  "dkp": 80, "icon": "icons/Tank.svg" }
 ]
